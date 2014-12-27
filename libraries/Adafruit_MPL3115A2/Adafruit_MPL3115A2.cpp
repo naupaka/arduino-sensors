@@ -76,10 +76,10 @@ boolean Adafruit_MPL3115A2::begin() {
 float Adafruit_MPL3115A2::getPressure() {
   uint32_t pressure;
 
-// write8(MPL3115A2_CTRL_REG1, 
-//	 MPL3115A2_CTRL_REG1_SBYB |
-//	 MPL3115A2_CTRL_REG1_OS128 |
-//	 MPL3115A2_CTRL_REG1_BAR);
+ write8(MPL3115A2_CTRL_REG1, 
+	 MPL3115A2_CTRL_REG1_SBYB |
+	 MPL3115A2_CTRL_REG1_OS128 |
+	 MPL3115A2_CTRL_REG1_BAR);
 
   uint8_t sta = 0;
   while (! (sta & MPL3115A2_REGISTER_STATUS_PDR)) {
@@ -110,10 +110,10 @@ float Adafruit_MPL3115A2::getPressure() {
 float Adafruit_MPL3115A2::getAltitude() {
   int32_t alt;
 
-//  write8(MPL3115A2_CTRL_REG1, 
-//	 MPL3115A2_CTRL_REG1_SBYB |
-//	 MPL3115A2_CTRL_REG1_OS128 |
-//	 MPL3115A2_CTRL_REG1_ALT);
+  write8(MPL3115A2_CTRL_REG1, 
+	 MPL3115A2_CTRL_REG1_SBYB |
+	 MPL3115A2_CTRL_REG1_OS128 |
+	 MPL3115A2_CTRL_REG1_ALT);
 
   uint8_t sta = 0;
   while (! (sta & MPL3115A2_REGISTER_STATUS_PDR)) {
@@ -197,8 +197,8 @@ uint8_t Adafruit_MPL3115A2::read8(uint8_t a) {
 
 void Adafruit_MPL3115A2::write8(uint8_t a, uint8_t d) {
 #ifndef __AVR_ATtiny85__
-  Serial.print("Writing $"); Serial.print(a, HEX); 
-  Serial.print(" = 0x"); Serial.println(d, HEX);
+  // Serial.print("Writing $"); Serial.print(a, HEX); 
+  // Serial.print(" = 0x"); Serial.println(d, HEX);
 #endif
   Wire.beginTransmission(MPL3115A2_ADDRESS); // start transmission to device 
   Wire.write(a); // sends register address to write to
