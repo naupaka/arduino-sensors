@@ -165,11 +165,11 @@ void setup() {
   dht.begin();
   
   
-  Serial.print("Flow sensor test!");
-   pinMode(FLOWSENSORPIN, INPUT);
-   digitalWrite(FLOWSENSORPIN, HIGH);
-   lastflowpinstate = digitalRead(FLOWSENSORPIN);
-   useInterrupt(true);
+  Serial.println("Flow sensor test!");
+  pinMode(FLOWSENSORPIN, INPUT);
+  digitalWrite(FLOWSENSORPIN, HIGH);
+  lastflowpinstate = digitalRead(FLOWSENSORPIN);
+  useInterrupt(true);
 }
 
 
