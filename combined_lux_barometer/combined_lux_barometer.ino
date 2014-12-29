@@ -1,4 +1,4 @@
-// Output format is YYYYMMDD, 24HRTIME, Barometric_pressure_in_pascals, Calculated_altitude_in_meters, 
+// Output format is YYYYMMDD, 24HRTIME, Barometric_pressure_in_pascals, 
 // temp_from_MPL3115A2_in_deg_C, light_from_TSL2561_in_lux, humidity_DHT_sensor_pcnt, DHT_temp_in_deg_C  
 
 #include <Wire.h>
@@ -152,8 +152,8 @@ void loop() {
   // Serial.print(pascals/3377); Serial.print(","); // Serial.println(" Inches (Hg)");
   Serial.print(pascals); Serial.print(","); // Serial.println(" pascals");
 
-  float altm = baro.getAltitude();
-  Serial.print(altm); Serial.print(","); // Serial.println(" meters");
+  // float altm = baro.getAltitude();
+  // Serial.print(altm); Serial.print(","); // Serial.println(" meters");
 
   float tempC = baro.getTemperature();
   Serial.print(tempC); Serial.print(",");// Serial.println("*C");
