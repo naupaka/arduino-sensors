@@ -170,6 +170,13 @@ void setup() {
   digitalWrite(FLOWSENSORPIN, HIGH);
   lastflowpinstate = digitalRead(FLOWSENSORPIN);
   useInterrupt(true);
+
+  // for chirp soil moisture sensor
+  Wire.begin();
+  writeI2CRegister8bit(0x20, 6); //reset
+
+
+
 }
 
 
@@ -294,6 +301,14 @@ void loop() {
   
   
   
+  // Chirp moisture capacitance reading
+  Serial.println(readI2CRegister16bit(0x20, 0)); //read capacitance register
+  // Serial.print(", ");
+  // Serial.println(readI2CRegister16bit(0x20, 5)); //temperature register
+  // Serial.print(", ");
+  // writeI2CRegister8bit(0x20, 3); //request light measurement 
+  // Serial.println(readI2CRegister16bit(0x20, 4)); //read light register  
+  
   delay(5000);
 
 }
@@ -392,3 +407,25 @@ time_t requestSync()
   Serial.write((byte)TIME_REQUEST);  
   return 0; // the time will be sent later in response to serial mesg
 }
+
+
+// these two functions are for the chirp soil moisture sensor
+void writeI2CRegister8bit(int addr, int value) {
+  Wire.beginTransmission(addr);
+  Wire.write(value);
+  Wire.endTransmission();
+}
+
+unsigned int readI2CRegister16bit(int addr, int reg) {
+  Wire.beginTransmission(addr);
+  Wire.write(reg);
+  Wire.endTransmission();
+  delay(20);
+  Wire.requestFrom(addr, 2);
+  unsigned int t = Wire.read() << 8;
+  t = t | Wire.read();
+  return t;
+}
+
+
+
