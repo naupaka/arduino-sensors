@@ -38,7 +38,7 @@ void setup() {
   // Choose output file name
   output = createWriter("sensor_data.txt"); 
   
-  size(200, 200);
+  // size(200, 200);
   
   // print to terminal
   println(Serial.list());
@@ -77,9 +77,9 @@ void draw()
   } 
 }
 
-void mousePressed() {  
-  sendTimeMessage( TIME_HEADER, getTimeNow());   
-}
+// void mousePressed() {  
+//  sendTimeMessage( TIME_HEADER, getTimeNow());   
+// }
 
 
 void sendTimeMessage(char header, long time) {  
