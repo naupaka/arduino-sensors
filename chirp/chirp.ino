@@ -24,9 +24,9 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(readI2CRegister16bit(0x20, 0)); //read capacitance register
-  Serial.print(", ");
-  Serial.println(readI2CRegister16bit(0x20, 5)); //temperature register
+  Serial.println(readI2CRegister16bit(0x20, 0)); //read capacitance register
+  // Serial.print(", ");
+  // Serial.println(readI2CRegister16bit(0x20, 5)); //temperature register
   // Serial.print(", ");
   // writeI2CRegister8bit(0x20, 3); //request light measurement 
   // Serial.println(readI2CRegister16bit(0x20, 4)); //read light register
