@@ -10,12 +10,20 @@
  * followed by the ten digit system time (unix time)
  */
  
+// This processing sketch was originally downloaded from: 
+// http://playground.arduino.cc/Code/Time
+// on December 29, 2014
+// Modified by Naupaka Zimmerman naupaka@gmail.com
+// December 30, 2014
 
 import processing.serial.*;
+
+// Added these which were missing from the original processing sketch
 import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+// For writing to a file
 PrintWriter output;
 
 public static final short portIndex = 0;  // select the com port, 0 is the first port
@@ -26,15 +34,21 @@ public static final char CR = 13;     // ASCII linefeed
 Serial myPort;     // Create object from Serial class
 
 void setup() {  
+
+  // Choose output file name
   output = createWriter("sensor_data.txt"); 
   
   size(200, 200);
+  
+  // print to terminal
   println(Serial.list());
   println(" Connecting to -> " + Serial.list()[portIndex]);
-  output.println(" Connecting to -> " + Serial.list()[portIndex]);
-  myPort = new Serial(this,Serial.list()[portIndex], 9600);
   
+  // write port to output file
+  output.println(" Connecting to -> " + Serial.list()[portIndex]);
   output.flush();
+  
+  myPort = new Serial(this,Serial.list()[portIndex], 9600);
 }
 
 void draw()
@@ -53,12 +67,11 @@ void draw()
          println();
          output.println();
          output.flush(); // Writes the remaining data to the file
-         // output.close(); // Finishes the file 
+         // output.close(); // Finishes the file, need to reopen again for more use 
        }
        else  {
          print(val); // echo everying but time request
          output.print(val); // echo everying but time request
-         // output.flush(); // Writes the remaining data to the file
        }
     }
   } 
