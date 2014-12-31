@@ -345,7 +345,7 @@ void loop() {
 
   // Compute heat index
   // Must send in temp in Fahrenheit!
-  float hi = dht.computeHeatIndex(f, h);
+  // float hi = dht.computeHeatIndex(f, h);
 
   // Serial.print("Humidity: "); 
   Serial.print(h); Serial.print(",");
