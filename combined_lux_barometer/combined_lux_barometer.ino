@@ -382,7 +382,7 @@ void loop() {
   liters -= 6;
   liters /= 60.0;
 */
-  Serial.println(liters); 
+  Serial.print(liters); Serial.print(",");
   // Serial.println(" Liters");
 
   
