@@ -45,8 +45,8 @@ void setup() {
   println(" Connecting to -> " + Serial.list()[portIndex]);
   
   // write port to output file
-  output.println(" Connecting to -> " + Serial.list()[portIndex]);
-  output.flush();
+  // output.println(" Connecting to -> " + Serial.list()[portIndex]);
+  // output.flush();
   
   myPort = new Serial(this,Serial.list()[portIndex], 9600);
 }
