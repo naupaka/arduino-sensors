@@ -249,7 +249,7 @@ void setup() {
   
   // Get clock time from processing app on computer
   setSyncProvider(requestSync);  //set function to call when sync required
-  Serial.println("Waiting for time sync message from computer");
+  // Serial.println("Waiting for time sync message from computer");
   
   
   // Initialise the TSL2561 light sensor
@@ -259,14 +259,14 @@ void setup() {
   }
   displaySensorDetails(); // Display some basic information on this sensor
   configureSensor(); // Setup the sensor gain and integration time
-  Serial.println("");
-  Serial.println("TSL2561 light sensor test successful");
+  // Serial.println("");
+  // Serial.println("TSL2561 light sensor test successful");
   
   // Initialise the MPL3115A2 barometric pressure sensor
-  Serial.println("Loading MPL3115A2 library");
+  // Serial.println("Loading MPL3115A2 library");
   
   // Initialise the water flow sensor
-  Serial.println("DHTxx test!");
+  // Serial.println("DHTxx test!");
   dht.begin();
   
   // Initialise the water flow sensor
@@ -274,12 +274,12 @@ void setup() {
   digitalWrite(FLOWSENSORPIN, HIGH);
   lastflowpinstate = digitalRead(FLOWSENSORPIN);
   useInterrupt(true);
-  Serial.println("Flow sensor test complete!");
+  // Serial.println("Flow sensor test complete!");
 
   // for chirp soil moisture sensor
   Wire.begin();
   writeI2CRegister8bit(0x20, 6); //reset
-  Serial.println("chirp soil moisture sensor test complete!");
+  // Serial.println("chirp soil moisture sensor test complete!");
   
    Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 }
@@ -457,6 +457,7 @@ void displaySensorDetails(void)
 {
   sensor_t sensor;
   tsl.getSensor(&sensor);
+  /*
   Serial.println("------------------------------------");
   Serial.print  ("Sensor:       "); Serial.println(sensor.name);
   Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
@@ -467,6 +468,7 @@ void displaySensorDetails(void)
   Serial.println("------------------------------------");
   Serial.println("");
   delay(500);
+  */
 }
 
 // Configures the gain and integration time for the TSL2561
@@ -483,10 +485,10 @@ void configureSensor(void)
   // tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_402MS);  /* 16-bit data but slowest conversions */
 
   /* Update these values depending on what you've set above! */  
-  Serial.println("------------------------------------");
-  Serial.print  ("Gain:         "); Serial.println("Auto");
-  Serial.print  ("Timing:       "); Serial.println("13 ms");
-  Serial.println("------------------------------------");
+  // Serial.println("------------------------------------");
+  // Serial.print  ("Gain:         "); Serial.println("Auto");
+  // Serial.print  ("Timing:       "); Serial.println("13 ms");
+  // Serial.println("------------------------------------");
 }
 
 
