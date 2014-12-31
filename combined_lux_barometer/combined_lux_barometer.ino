@@ -397,7 +397,7 @@ void loop() {
   Serial.print(fsrVoltage); Serial.print(",");
  
   if (fsrVoltage == 0) {
-    Serial.print("No pressure, NA, NA,");  
+    Serial.print("No_pressure,NA,NA,");  
   } else {
     // The voltage = Vcc * R / (R + FSR) where R = 10K and Vcc = 5V
     // so FSR = ((Vcc - V) * R) / V        yay math!
