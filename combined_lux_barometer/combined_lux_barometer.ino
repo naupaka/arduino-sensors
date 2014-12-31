@@ -335,7 +335,7 @@ void loop() {
   // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   float h = dht.readHumidity();
   float t = dht.readTemperature();  // Read temperature as Celsius
-  // float f = dht.readTemperature(true); // Read temperature as Fahrenheit
+  float f = dht.readTemperature(true); // Read temperature as Fahrenheit
   
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
