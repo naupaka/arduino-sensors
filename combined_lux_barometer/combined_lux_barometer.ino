@@ -515,7 +515,7 @@ void processSyncMessage() {
   // if time sync available from serial port, update time and return true
   while(Serial.available() >=  TIME_MSG_LEN ){  // time message consists of a header and ten ascii digits
     char c = Serial.read() ; 
-    Serial.print(c);  
+    // Serial.print(c);  
     if( c == TIME_HEADER ) {       
       time_t pctime = 0;
       for(int i=0; i < TIME_MSG_LEN -1; i++){   
