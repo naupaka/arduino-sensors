@@ -1,3 +1,4 @@
 sudo fbi -d /dev/fb0 -a -T 2 snap.jpg
 sudo uvccapture
 sudo uvccapture -B30 -G80 -x1600 -y1200
+infrapix_single -i snap.jpg -o ndvi_snap.png --hide_colorbar
