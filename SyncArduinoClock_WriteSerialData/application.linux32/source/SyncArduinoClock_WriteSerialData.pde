@@ -42,14 +42,14 @@ void setup() {
   // thanks to example here 
   // http://www.mooduino.co.uk/2010/03/file-output-with-processing.html
   // tz = TimeZone.getDefault();
-  DateFormat dfm = new SimpleDateFormat("yyyyMMdd");
+  DateFormat dfm = new SimpleDateFormat("yyyyMMddHHmm");
   // dfm.setTimeZone(tz);
   String fileName = "/home/pi/greenhouse_data/sensor_data_files/" + dfm.format(new Date()) + "_sensor_data.csv";
   output = createWriter(fileName);
   
   // print to terminal
-  println(Serial.list());
-  println(" Connecting to -> " + Serial.list()[portIndex]);
+  // println(Serial.list());
+  // println(" Connecting to -> " + Serial.list()[portIndex]);
   
   // write port to output file
   // output.println(" Connecting to -> " + Serial.list()[portIndex]);
@@ -71,13 +71,13 @@ void draw()
        if(val == LF)
            ; //igonore
        else if(val == CR) {           
-         println();
+         // println();
          output.println();
          output.flush(); // Writes the remaining data to the file
          // output.close(); // Finishes the file, need to reopen again for more use 
        }
        else  {
-         print(val); // echo everying but time request
+         // print(val); // echo everying but time request
          output.print(val); // echo everying but time request
        }
     }
