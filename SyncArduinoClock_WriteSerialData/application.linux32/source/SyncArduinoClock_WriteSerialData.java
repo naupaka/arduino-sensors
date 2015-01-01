@@ -1,3 +1,25 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import processing.serial.*; 
+import java.util.Date; 
+import java.util.Calendar; 
+import java.util.GregorianCalendar; 
+import java.text.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class SyncArduinoClock_WriteSerialData extends PApplet {
+
 /**
  * SyncArduinoClock. 
  *
@@ -16,13 +38,13 @@
 // Modified by Naupaka Zimmerman naupaka@gmail.com
 // December 30, 2014
 
-import processing.serial.*;
+
 
 // Added these which were missing from the original processing sketch
-import java.util.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.text.*;
+
+
+
+
 
 // For writing to a file
 PrintWriter output;
@@ -36,7 +58,7 @@ public static final char LF = 10;     // ASCII linefeed
 public static final char CR = 13;     // ASCII linefeed
 Serial myPort;     // Create object from Serial class
 
-void setup() {  
+public void setup() {  
 
   // Choose output file name
   // thanks to example here 
@@ -58,10 +80,10 @@ void setup() {
   myPort = new Serial(this,Serial.list()[portIndex], 9600);
 }
 
-void draw()
+public void draw()
 {
   if ( myPort.available() > 0) {  // If data is available,
-    char val = char(myPort.read());         // read it and store it in val
+    char val = PApplet.parseChar(myPort.read());         // read it and store it in val
     if(val == TIME_REQUEST){
        long t = getTimeNow();
        sendTimeMessage(TIME_HEADER, t);   
@@ -89,13 +111,13 @@ void draw()
 // }
 
 
-void sendTimeMessage(char header, long time) {  
+public void sendTimeMessage(char header, long time) {  
   String timeStr = String.valueOf(time);  
   myPort.write(header);  // send header and time to arduino
   myPort.write(timeStr);   
 }
 
-long getTimeNow(){
+public long getTimeNow(){
   // java time is in ms, we want secs    
   GregorianCalendar cal = new GregorianCalendar();
   cal.setTime(new Date());
@@ -104,4 +126,13 @@ long getTimeNow(){
   long now = (cal.getTimeInMillis() / 1000) ; 
   now = now + (tzo/1000) + (dst/1000); 
   return now;
+}
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "SyncArduinoClock_WriteSerialData" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }
