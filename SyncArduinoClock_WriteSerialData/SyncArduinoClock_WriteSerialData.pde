@@ -25,6 +25,8 @@ import java.util.GregorianCalendar;
 
 // For writing to a file
 PrintWriter output;
+TimeZone tz;
+String dataFolder;
 
 public static final short portIndex = 0;  // select the com port, 0 is the first port
 public static final char TIME_HEADER = 'T'; //header byte for arduino serial time message 
@@ -36,9 +38,13 @@ Serial myPort;     // Create object from Serial class
 void setup() {  
 
   // Choose output file name
-  output = createWriter("sensor_data.txt"); 
-  
-  // size(200, 200);
+  // thanks to example here 
+  // http://www.mooduino.co.uk/2010/03/file-output-with-processing.html
+  tz = TimeZone.getDefault();
+  DateFormat dfm = new SimpleDateFormat("yyyyMMdd");
+  dfm.setTimeZone(tz);
+  String fileName = "/home/pi/greenhouse_data/sensor_data_files/" + dfm.format(new Date()) + "_sensor_data.csv";
+  output = createWriter(fileName);
   
   // print to terminal
   println(Serial.list());
