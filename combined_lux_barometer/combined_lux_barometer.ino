@@ -328,7 +328,10 @@ void loop() {
   else {
     // If event.light = 0 lux the sensor is probably saturated
     // and no reliable data could be generated!
-    Serial.println("Sensor overload");
+    // Serial.print("Sensor overload"); Serial.print(",");
+    
+    // Added this back in since low light is more likely than saturation in this case
+    Serial.print(event.light); Serial.print(","); // Serial.println(" lux");
   }
   
   
@@ -441,7 +444,8 @@ void loop() {
   
   
    //////////////////// Pause between sets of measurements  ////////////////////
-  delay(5000);
+  // measure once per minute
+  delay(60000);
 
 }
 
