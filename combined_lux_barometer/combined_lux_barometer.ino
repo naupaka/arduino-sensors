@@ -281,7 +281,7 @@ void setup() {
   writeI2CRegister8bit(0x20, 6); //reset
   // Serial.println("chirp soil moisture sensor test complete!");
   
-   Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
+  Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 }
 
 
@@ -301,7 +301,7 @@ void loop() {
   //////////////////// Barometric pressue ////////////////////
   // Make sure MPL3115A2 is initialized
   if (! baro.begin()) {
-    Serial.println("Couldnt find sensor");
+    Serial.println("Couldnt find MPL3115A2 barometric pressure sensor");
     return;
   }
   
