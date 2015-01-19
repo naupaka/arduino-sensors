@@ -500,18 +500,22 @@ void configureSensor(void)
 void digitalClockDisplay(){
   // digital clock display of the time
   Serial.print(year());
-  Serial.print(month());
-  Serial.print(day());
+  Serial.print("-");
+  printDigits(month());
+  Serial.print("-");
+  printDigits(day());
   Serial.print(",");
-  Serial.print(hour());
+  printDigits(hour());
+  Serial.print(":");
   printDigits(minute());
+  Serial.print(":");
   printDigits(second());
   // Serial.println(); 
 }
 
 void printDigits(int digits){
   // utility function for digital clock display: prints preceding colon and leading 0
-  Serial.print(":");
+  // Serial.print(":");
   if(digits < 10)
     Serial.print('0');
   Serial.print(digits);
