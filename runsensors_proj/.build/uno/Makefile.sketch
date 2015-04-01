@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/uno/src/combined_lux_barometer.cpp : src/combined_lux_barometer.ino
+	@mkdir -p .build/uno/src
+	@echo [93msrc/combined_lux_barometer.ino[0m
+	@/usr/local/bin/ino preproc  -o $@ $^
+
+
+all : .build/uno/src/combined_lux_barometer.cpp
+	@true
+
