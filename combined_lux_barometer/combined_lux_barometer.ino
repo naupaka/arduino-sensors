@@ -19,6 +19,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Environmental sensors (and associated libraries) used include:
 
+// Adafruit Data Logging and Real Time Clock shield
+// https://www.adafruit.com/product/1141
+// Clock library available here: https://github.com/adafruit/RTClib
+// Example code using RTC and SD shield here:
+// https://github.com/adafruit/Light-and-Temp-logger
+
 // Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor Breakout
 // http://www.adafruit.com/product/439
 // Library and examples: https://github.com/adafruit/TSL2561-Arduino-Library
@@ -90,6 +96,8 @@
 #include <Adafruit_MPL3115A2.h>
 #include <Time.h>  
 #include <DHT.h>
+#include <SD.h>
+#include "RTClib.h"
 
 
 
