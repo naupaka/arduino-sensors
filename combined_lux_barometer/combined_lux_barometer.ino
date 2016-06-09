@@ -148,9 +148,9 @@
 */
 
 // Set time parameters
-#define TIME_MSG_LEN  11   // time sync to PC is HEADER followed by unix time_t as ten ascii digits
-#define TIME_HEADER  'T'   // Header tag for serial time sync message
-#define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
+// #define TIME_MSG_LEN  11   // time sync to PC is HEADER followed by unix time_t as ten ascii digits
+// #define TIME_HEADER  'T'   // Header tag for serial time sync message
+// #define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 
 
 // Set parameters for SD card logging
@@ -345,22 +345,16 @@ void setup() {
     Serial.println("RTC failed");
 #endif  //ECHO_TO_SERIAL
   }
-  
-
-  logfile.println("millis,stamp,datetime,light,temp,vcc");    
-#if ECHO_TO_SERIAL
-  Serial.println("millis,stamp,datetime,light,temp,vcc");
-#endif //ECHO_TO_SERIAL
  
   // If you want to set the aref to something other than 5v
-  analogReference(EXTERNAL);
+  // analogReference(EXTERNAL);
   
   // End code for RTC clock and SD
   //////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////
   
   // Get clock time from processing app on computer
-  setSyncProvider(requestSync);  //set function to call when sync required
+  // setSyncProvider(requestSync);  //set function to call when sync required
   // Serial.println("Waiting for time sync message from computer");
   
   
@@ -400,15 +394,15 @@ void setup() {
 
 void loop() { 
   //////////////////// Clock ////////////////////
-  // to get time
-  if(Serial.available() ) {
-    processSyncMessage();
-  }
-  if(timeStatus()!= timeNotSet) {
-    digitalWrite(13,timeStatus() == timeSet); // on if synced, off if needs refresh  
-    digitalClockDisplay(); Serial.print(","); 
-  }
-  
+  // to get time from computer (not from RTC)
+//   if(Serial.available() ) {
+//     processSyncMessage();
+//   }
+//   if(timeStatus()!= timeNotSet) {
+//     digitalWrite(13,timeStatus() == timeSet); // on if synced, off if needs refresh  
+//     digitalClockDisplay(); Serial.print(","); 
+//   }
+//   
   
   //////////////////// Barometric pressue ////////////////////
   // Make sure MPL3115A2 is initialized
