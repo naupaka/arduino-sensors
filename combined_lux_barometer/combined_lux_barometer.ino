@@ -280,7 +280,7 @@ void setup() {
   // the computer on which it was compiled
   // RTC.adjust(DateTime(__DATE__, __TIME__));
   
-  Serial.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
+  Serial.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons");
 }
 
 
@@ -430,12 +430,12 @@ void loop() {
     if (fsrConductance <= 1000) {
       fsrForce = fsrConductance / 80;
       // Serial.print("Force in Newtons: ");
-      Serial.print(fsrForce); Serial.print(",");     
+      Serial.println(fsrForce);     
     } else {
       fsrForce = fsrConductance - 1000;
       fsrForce /= 30;
       // Serial.print("Force in Newtons: ");
-      Serial.print(fsrForce); Serial.print(",");           
+      Serial.println(fsrForce);           
     }
   }
   // Serial.println("--------------------");
