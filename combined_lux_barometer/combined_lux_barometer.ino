@@ -90,7 +90,7 @@
 #include <Adafruit_MPL3115A2.h>
 #include <Time.h>  
 #include <DHT.h>
-
+#include "RTClib.h"
 
 
 
@@ -143,6 +143,10 @@
 #define TIME_HEADER  'T'   // Header tag for serial time sync message
 #define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 
+// Add code for RTC
+///////////////////////////////
+RTC_DS1307 RTC;
+char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 
 
@@ -278,8 +282,11 @@ void setup() {
 
   // for chirp soil moisture sensor
   Wire.begin();
-  writeI2CRegister8bit(0x20, 6); //reset
+  // writeI2CRegister8bit(0x20, 6); //reset
   // Serial.println("chirp soil moisture sensor test complete!");
+  
+  // Start RTC clock
+  RTC.begin()
   
   Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 }
@@ -296,6 +303,25 @@ void loop() {
     digitalWrite(13,timeStatus() == timeSet); // on if synced, off if needs refresh  
     digitalClockDisplay(); Serial.print(","); 
   }
+  
+  
+  // Print time from RTC
+  DateTime now = rtc.now();
+    
+  Serial.print(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);
+  Serial.print(" (");
+  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  Serial.print(") ");
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);
+  Serial.println();
   
   
   //////////////////// Barometric pressue ////////////////////
