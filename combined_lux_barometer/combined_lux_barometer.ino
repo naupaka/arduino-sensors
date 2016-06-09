@@ -143,8 +143,7 @@
 // Add code for RTC
 ///////////////////////////////
 RTC_DS1307 RTC;
-char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-
+// char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
 
 // Set parameters for DHT (temperature and humidity sensor) 
@@ -248,11 +247,6 @@ long fsrForce;       // Finally, the resistance converted to force
 void setup() {
   Serial.begin(9600);
   
-  // Get clock time from processing app on computer
-  setSyncProvider(requestSync);  //set function to call when sync required
-  // Serial.println("Waiting for time sync message from computer");
-  
-  
   // Initialise the TSL2561 light sensor
   if(!tsl.begin()) {
     Serial.print("Ooops, no TSL2561 detected ... Check your wiring or I2C ADDR!");
@@ -286,40 +280,31 @@ void setup() {
   // the computer on which it was compiled
   // RTC.adjust(DateTime(__DATE__, __TIME__));
   
-  Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
+  Serial.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 }
 
 
 
 void loop() { 
-  //////////////////// Clock ////////////////////
-  // to get time
-  if(Serial.available() ) {
-    processSyncMessage();
-  }
-  if(timeStatus()!= timeNotSet) {
-    digitalWrite(13,timeStatus() == timeSet); // on if synced, off if needs refresh  
-    digitalClockDisplay(); Serial.print(","); 
-  }
-  
-  
+
   // Print time from RTC
   DateTime now = RTC.now();
     
   Serial.print(now.year(), DEC);
-  Serial.print('/');
-  Serial.print(now.month(), DEC);
-  Serial.print('/');
-  Serial.print(now.day(), DEC);
-  Serial.print(" (");
-  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
-  Serial.print(") ");
-  Serial.print(now.hour(), DEC);
+  Serial.print('-');
+  Serial.print(printDigits(now.month()), DEC);
+  Serial.print('-');
+  Serial.print(printDigits(now.day()), DEC);
+  //Serial.print(" (");
+  //Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  //Serial.print(") ");
+  Serial.print(',');
+  Serial.print(printDigits(now.hour()), DEC);
   Serial.print(':');
-  Serial.print(now.minute(), DEC);
+  Serial.print(printDigits(now.minute()), DEC);
   Serial.print(':');
-  Serial.print(now.second(), DEC);
-  Serial.println();
+  Serial.print(printDigits(now.second()), DEC);
+  Serial.print(',');
   
   
   //////////////////// Barometric pressue ////////////////////
@@ -531,30 +516,6 @@ void printDigits(int digits){
   if(digits < 10)
     Serial.print('0');
   Serial.print(digits);
-}
-
-void processSyncMessage() {
-  // if time sync available from serial port, update time and return true
-  while(Serial.available() >=  TIME_MSG_LEN ){  // time message consists of a header and ten ascii digits
-    char c = Serial.read() ; 
-    // Serial.print(c);  
-    if( c == TIME_HEADER ) {       
-      time_t pctime = 0;
-      for(int i=0; i < TIME_MSG_LEN -1; i++){   
-        c = Serial.read();          
-        if( c >= '0' && c <= '9'){   
-          pctime = (10 * pctime) + (c - '0') ; // convert digits to a number    
-        }
-      }   
-      setTime(pctime);   // Sync Arduino clock to the time received on the serial port
-    }  
-  }
-}
-
-time_t requestSync()
-{
-  Serial.write((byte)TIME_REQUEST);  
-  return 0; // the time will be sent later in response to serial mesg
 }
 
 
