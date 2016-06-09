@@ -286,7 +286,7 @@ void setup() {
   // Serial.println("chirp soil moisture sensor test complete!");
   
   // Start RTC clock
-  RTC.begin()
+  RTC.begin();
   
   // You only ever have to run this once, to set the RTC
   // Should only ever uncomment if RTC battery changes etc
@@ -312,7 +312,7 @@ void loop() {
   
   
   // Print time from RTC
-  DateTime now = rtc.now();
+  DateTime now = RTC.now();
     
   Serial.print(now.year(), DEC);
   Serial.print('/');
