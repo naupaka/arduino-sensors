@@ -5,14 +5,15 @@
 
 // Compiled and revised by Naupaka Zimmerman naupaka@gmail.com
 // December 30, 2014
+// Updated to add RTC and SD card, remove chirp soil moisture
+// June 9, 2016
 
 // Output format is comma-delimited, fields are:
 // YYYYMMDD, TIME24HR, MPL3115A2_barometric_pressure_in_pascals, 
 // MPL3115A2_temp_in_deg_C, TSL2561_light_in_lux, DHT_humidity_pcnt, DHT_temp_in_deg_C,
 // liquid_flow_frequency, liquid_flow_pulses_cumulative_count, 
 // liquid_flow_cumulative_liters, FSR_Analog_reading, FSR_voltage_in_mV, 
-// FSR_resistance_in_ohms, FSR_conductance_in_microMhos, FSR_force_in_Newtons,
-// chirp_soil_moisture_capacitance_higher_is_wetter
+// FSR_resistance_in_ohms, FSR_conductance_in_microMhos, FSR_force_in_Newtons
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -62,10 +63,6 @@
 // BSD license, check license.txt for more information
 // All text above must be included in any redistribution
 
-// Chirp! The Plant Watering Alarm
-// http://www.adafruit.com/product/1965
-// Example sketch and technical details here:
-// http://wemakethings.net/chirp/
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
