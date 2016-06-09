@@ -288,6 +288,12 @@ void setup() {
   // Start RTC clock
   RTC.begin()
   
+  // You only ever have to run this once, to set the RTC
+  // Should only ever uncomment if RTC battery changes etc
+  // It sets the RTC date and time to the date and time of
+  // the computer on which it was compiled
+  // RTC.adjust(DateTime(__DATE__, __TIME__));
+  
   Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 }
 
