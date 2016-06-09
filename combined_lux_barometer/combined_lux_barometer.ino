@@ -90,18 +90,6 @@
 #include "RTClib.h"
 
 
-
-/* 
- * TimeSerial.pde
- * example code illustrating Time library set through serial port messages.
- *
- * Messages consist of the letter T followed by ten digit time (as seconds since Jan 1 1970)
- * you can send the text on the next line using Serial Monitor to set the clock to noon Jan 1 2010
- T1262347200  
- *
- * A Processing example sketch to automatically send the messages is inclided in the download
- */ 
-
 /* This driver uses the Adafruit unified sensor library (Adafruit_Sensor),
    which provides a common 'type' for sensor data and some helper functions.
    
@@ -134,11 +122,6 @@
    =======
    2013/JAN/31  - First version (KTOWN)
 */
-
-// Set time parameters
-#define TIME_MSG_LEN  11   // time sync to PC is HEADER followed by unix time_t as ten ascii digits
-#define TIME_HEADER  'T'   // Header tag for serial time sync message
-#define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 
 // Add code for RTC
 ///////////////////////////////
