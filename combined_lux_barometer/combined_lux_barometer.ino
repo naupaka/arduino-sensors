@@ -98,7 +98,7 @@
 #include <Time.h>  
 #include <DHT.h>
 #include <SD.h>
-#include "RTClib.h"
+#include <RTClib.h>
 
 
 
@@ -148,9 +148,9 @@
 */
 
 // Set time parameters
-// #define TIME_MSG_LEN  11   // time sync to PC is HEADER followed by unix time_t as ten ascii digits
-// #define TIME_HEADER  'T'   // Header tag for serial time sync message
-// #define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
+#define TIME_MSG_LEN  11   // time sync to PC is HEADER followed by unix time_t as ten ascii digits
+#define TIME_HEADER  'T'   // Header tag for serial time sync message
+#define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 
 
 // Set parameters for SD card logging
@@ -159,13 +159,13 @@
 // A simple data logger for the Arduino analog pins
 
 // how many milliseconds between grabbing data and logging it. 1000 ms is once a second
-#define LOG_INTERVAL  1000 // mills between entries (reduce to take more/faster data)
+#define LOG_INTERVAL  60000 // mills between entries (reduce to take more/faster data)
 
 // how many milliseconds before writing the logged data permanently to disk
 // set it to the LOG_INTERVAL to write each time (safest)
 // set it to 10*LOG_INTERVAL to write all data every 10 datareads, you could lose up to 
 // the last 10 reads if power is lost but it uses less power and is much faster!
-#define SYNC_INTERVAL 1000 // mills between calls to flush() - to write data to the card
+#define SYNC_INTERVAL 60000 // mills between calls to flush() - to write data to the card
 uint32_t syncTime = 0; // time of last sync()
 
 #define ECHO_TO_SERIAL   1 // echo data to serial port
@@ -354,8 +354,8 @@ void setup() {
   //////////////////////////////////////////////////////////
   
   // Get clock time from processing app on computer
-  // setSyncProvider(requestSync);  //set function to call when sync required
-  // Serial.println("Waiting for time sync message from computer");
+  setSyncProvider(requestSync);  //set function to call when sync required
+  Serial.println("Waiting for time sync message from computer");
   
   
   // Initialise the TSL2561 light sensor
@@ -387,13 +387,13 @@ void setup() {
   writeI2CRegister8bit(0x20, 6); //reset
   // Serial.println("chirp soil moisture sensor test complete!");
   
-  logfile.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
+  logfile.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
     
 #if ECHO_TO_SERIAL
-  Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
+  Serial.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 #endif //ECHO_TO_SERIAL
   
-  // Serial.println("YYYYMMDD,TIME24HR,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
+  // Serial.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons,chirp_soil_moisture_capacitance_higher_is_wetter");
 }
 
 
@@ -401,14 +401,14 @@ void setup() {
 void loop() { 
   //////////////////// Clock ////////////////////
   // to get time from computer (not from RTC)
-//   if(Serial.available() ) {
-//     processSyncMessage();
-//   }
-//   if(timeStatus()!= timeNotSet) {
-//     digitalWrite(13,timeStatus() == timeSet); // on if synced, off if needs refresh  
-//     digitalClockDisplay(); Serial.print(","); 
-//   }
-//   
+   if(Serial.available() ) {
+     processSyncMessage();
+   }
+   if(timeStatus()!= timeNotSet) {
+     digitalWrite(13,timeStatus() == timeSet); // on if synced, off if needs refresh  
+     digitalClockDisplay(); Serial.print(","); 
+   }
+   
 
   DateTime now;
 
@@ -737,6 +737,7 @@ unsigned int readI2CRegister16bit(int addr, int reg) {
   t = t | Wire.read();
   return t;
 }
+
 
 
 
