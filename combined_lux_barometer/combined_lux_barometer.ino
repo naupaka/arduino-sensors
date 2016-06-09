@@ -5,6 +5,7 @@
 
 // Compiled and revised by Naupaka Zimmerman naupaka@gmail.com
 // December 30, 2014
+// Updated with RTC and SD code June 9, 2016
 
 // Output format is comma-delimited, fields are:
 // YYYYMMDD, TIME24HR, MPL3115A2_barometric_pressure_in_pascals, 
@@ -154,6 +155,7 @@
 
 // Set parameters for SD card logging
 //////////////////////////////////////////////////
+//////////////////////////////////////////////////
 // A simple data logger for the Arduino analog pins
 
 // how many milliseconds between grabbing data and logging it. 1000 ms is once a second
@@ -172,12 +174,6 @@ uint32_t syncTime = 0; // time of last sync()
 // the digital pins that connect to the LEDs
 #define redLEDpin 2
 #define greenLEDpin 3
-
-// The analog pins that connect to the sensors
-#define BANDGAPREF 14            // special indicator that we want to measure the bandgap
-
-#define aref_voltage 3.3         // we tie 3.3V to ARef and measure it with a multimeter!
-#define bandgap_voltage 1.1      // this is not super guaranteed but its not -too- off
 
 RTC_DS1307 RTC; // define the Real Time Clock object
 
@@ -198,6 +194,8 @@ void error(char *str)
   while(1);
 }
 
+//////////////////////////////////////////////////
+//////////////////////////////////////////////////
 
 // Set parameters for DHT (temperature and humidity sensor) 
 #define DHTPIN 2     // what pin we're connected to for DHT sensor
@@ -300,6 +298,10 @@ long fsrForce;       // Finally, the resistance converted to force
 void setup() {
   Serial.begin(9600);
   
+  // Code for SD and RTC clock
+  //////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////
+  
     // use debugging LEDs
   pinMode(redLEDpin, OUTPUT);
   pinMode(greenLEDpin, OUTPUT);
@@ -352,6 +354,10 @@ void setup() {
  
   // If you want to set the aref to something other than 5v
   analogReference(EXTERNAL);
+  
+  // End code for RTC clock and SD
+  //////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////
   
   // Get clock time from processing app on computer
   setSyncProvider(requestSync);  //set function to call when sync required
