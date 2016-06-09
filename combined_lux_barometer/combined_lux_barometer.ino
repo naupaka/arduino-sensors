@@ -292,18 +292,18 @@ void loop() {
     
   Serial.print(now.year(), DEC);
   Serial.print('-');
-  Serial.print(printDigits(now.month()), DEC);
+  printDigits(now.month());
   Serial.print('-');
-  Serial.print(printDigits(now.day()), DEC);
+  printDigits(now.day());
   //Serial.print(" (");
   //Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
   //Serial.print(") ");
   Serial.print(',');
-  Serial.print(printDigits(now.hour()), DEC);
+  printDigits(now.hour());
   Serial.print(':');
-  Serial.print(printDigits(now.minute()), DEC);
+  printDigits(now.minute());
   Serial.print(':');
-  Serial.print(printDigits(now.second()), DEC);
+  printDigits(now.second());
   Serial.print(',');
   
   
