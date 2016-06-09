@@ -77,8 +77,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-
-
+// To add moisture sensor code back in, use code from:
+// https://gist.github.com/naupaka/654c37ae11eb887e267b34679cbc161e
+// After connecting reset pin on sensor to interrupt pin (number 2) on arduino
 
 // Load libraries
 #include <Wire.h>
@@ -311,6 +312,7 @@ void setup() {
   // Initialise the TSL2561 light sensor
   if(!tsl.begin()) {
     Serial.print("Ooops, no TSL2561 detected ... Check your wiring or I2C ADDR!");
+    logfile.print("Ooops, no TSL2561 detected ... Check your wiring or I2C ADDR!");
     while(1);
   }
   displaySensorDetails(); // Display some basic information on this sensor
@@ -342,6 +344,7 @@ void setup() {
   // RTC.adjust(DateTime(__DATE__, __TIME__));
   
   Serial.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons");
+  logfile.println("YYYY-MM-DD,HH:MM:SS,MPL3115A2_barometric_pressure_in_pascals,MPL3115A2_temp_in_deg_C,TSL2561_light_in_lux,DHT_humidity_pcnt,DHT_temp_in_deg_C,liquid_flow_frequency,liquid_flow_pulses_cumulative_count,liquid_flow_cumulative_liters,FSR_Analog_reading,FSR_voltage_in_mV,FSR_resistance_in_ohms,FSR_conductance_in_microMhos,FSR_force_in_Newtons");
 }
 
 
@@ -357,38 +360,48 @@ void loop() {
   digitalWrite(greenLEDpin, HIGH);  
     
   Serial.print(now.year(), DEC);
+  logfile.print(now.year(), DEC);
   Serial.print('-');
+  logfile.print('-');
   printDigits(now.month());
   Serial.print('-');
+  logfile.print('-');
   printDigits(now.day());
   //Serial.print(" (");
   //Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
   //Serial.print(") ");
   Serial.print(',');
+  logfile.print(',');
   printDigits(now.hour());
   Serial.print(':');
+  logfile.print(':');
   printDigits(now.minute());
   Serial.print(':');
+  logfile.print(':');
   printDigits(now.second());
   Serial.print(',');
+  logfile.print(',');
   
   
   //////////////////// Barometric pressue ////////////////////
   // Make sure MPL3115A2 is initialized
   if (! baro.begin()) {
     Serial.println("Couldnt find MPL3115A2 barometric pressure sensor");
+    logfile.println("Couldnt find MPL3115A2 barometric pressure sensor");
     return;
   }
   
   float pascals = baro.getPressure();
   // Serial.print(pascals/3377); Serial.println(" Inches (Hg)");
   Serial.print(pascals); Serial.print(",");
+  logfile.print(pascals); logfile.print(",");
 
   // float altm = baro.getAltitude();
   // Serial.print(altm); Serial.println(" meters");
 
   float tempC = baro.getTemperature();
   Serial.print(tempC); Serial.print(",");// Serial.println("*C");
+  logfile.print(tempC); logfile.print(",");// logfile.println("*C");
 
 
   //////////////////// Light sensor ////////////////////
@@ -399,6 +412,7 @@ void loop() {
   // Display the results (light is measured in lux)
   if (event.light) {
     Serial.print(event.light); Serial.print(","); // Serial.println(" lux");
+    logfile.print(event.light); logfile.print(","); // logfile.println(" lux");
   }
   else {
     // If event.light = 0 lux the sensor is probably saturated
@@ -407,6 +421,7 @@ void loop() {
     
     // Added this back in since low light is more likely than saturation in this case
     Serial.print(event.light); Serial.print(","); // Serial.println(" lux");
+    logfile.print(event.light); logfile.print(","); // logfile.println(" lux");
   }
   
   
@@ -420,6 +435,7 @@ void loop() {
   // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t) || isnan(f)) {
     Serial.println("Failed to read from DHT sensor!");
+    logfile.println("Failed to read from DHT sensor!");
     return;
   }
 
@@ -429,9 +445,11 @@ void loop() {
 
   // Serial.print("Humidity: "); 
   Serial.print(h); Serial.print(",");
+  logfile.print(h); logfile.print(",");
   // Serial.print(" %\t");
   // Serial.print("Temperature: "); 
   Serial.print(t); Serial.print(",");
+  logfile.print(t); logfile.print(",");
   // Serial.print(" *C ");
   // Serial.print(f);
   // Serial.print(" *F\t");
@@ -443,8 +461,10 @@ void loop() {
    //////////////////// Water flow rate  ////////////////////
   // Serial.print("Freq: "); 
   Serial.print(flowrate); Serial.print(",");
+  logfile.print(flowrate); logfile.print(",");
   // Serial.print("Pulses: "); 
   Serial.print(pulses, DEC); Serial.print(",");
+  logfile.print(pulses, DEC); logfile.print(",");
   
   // if a plastic sensor use the following calculation
   // Sensor Frequency (Hz) = 7.5 * Q (Liters/min)
@@ -463,6 +483,7 @@ void loop() {
   liters /= 60.0;
 */
   Serial.print(liters); Serial.print(",");
+  logfile.print(liters); logfile.print(",");
   // Serial.println(" Liters");
 
   
@@ -470,14 +491,17 @@ void loop() {
   fsrReading = analogRead(fsrPin);  
   // Serial.print("Analog reading = ");
   Serial.print(fsrReading); Serial.print(",");
+  logfile.print(fsrReading); logfile.print(",");
  
   // analog voltage reading ranges from about 0 to 1023 which maps to 0V to 5V (= 5000mV)
   fsrVoltage = map(fsrReading, 0, 1023, 0, 5000);
   // Serial.print("Voltage reading in mV = ");
   Serial.print(fsrVoltage); Serial.print(",");
+  logfile.print(fsrVoltage); logfile.print(",");
  
   if (fsrVoltage == 0) {
     Serial.print("No_pressure,NA,NA,");  
+    logfile.print("No_pressure,NA,NA,");  
   } else {
     // The voltage = Vcc * R / (R + FSR) where R = 10K and Vcc = 5V
     // so FSR = ((Vcc - V) * R) / V        yay math!
@@ -486,22 +510,26 @@ void loop() {
     fsrResistance /= fsrVoltage;
     // Serial.print("FSR resistance in ohms = ");
     Serial.print(fsrResistance); Serial.print(",");
+    logfile.print(fsrResistance); logfile.print(",");
  
     fsrConductance = 1000000;           // we measure in micromhos so 
     fsrConductance /= fsrResistance;
     // Serial.print("Conductance in microMhos: ");
     Serial.print(fsrConductance); Serial.print(",");
+    logfile.print(fsrConductance); logfile.print(",");
  
     // Use the two FSR guide graphs to approximate the force
     if (fsrConductance <= 1000) {
       fsrForce = fsrConductance / 80;
       // Serial.print("Force in Newtons: ");
       Serial.println(fsrForce);     
+      logfile.println(fsrForce);     
     } else {
       fsrForce = fsrConductance - 1000;
       fsrForce /= 30;
       // Serial.print("Force in Newtons: ");
-      Serial.println(fsrForce);           
+      Serial.println(fsrForce);
+      logfile.println(fsrForce);
     }
   }
   // Serial.println("--------------------");
@@ -516,7 +544,7 @@ void loop() {
   // blink LED to show we are syncing data to the card & updating FAT!
   digitalWrite(redLEDpin, HIGH);
   
-  logfile.println("This is a test");
+  // logfile.println("This is a test");
 
   logfile.flush();
   digitalWrite(redLEDpin, LOW);
@@ -596,7 +624,9 @@ void printDigits(int digits){
   // Serial.print(":");
   if(digits < 10)
     Serial.print('0');
+    logfile.print('0');
   Serial.print(digits);
+  logfile.print(digits);
 }
 
 
