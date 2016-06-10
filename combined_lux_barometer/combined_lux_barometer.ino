@@ -624,6 +624,7 @@ void printDigits(int digits){
   // Serial.print(":");
   if(digits < 10)
     Serial.print('0');
+  if(digits < 10)
     logfile.print('0');
   Serial.print(digits);
   logfile.print(digits);
